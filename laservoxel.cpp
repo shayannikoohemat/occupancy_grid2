@@ -207,44 +207,48 @@ LaserPoints LaserVoxel::export_all()
 
 LaserPoints LaserVoxel::export_vox_centres()
 {
-LaserPoints l;
+LaserPoints l,l_test;
   for (uint i=0;i<vox_num_X;i++)
    for (uint j=0; j<vox_num_Y;j++)
      for (uint k=0;k<vox_num_Z;k++)
-     if (Vox[i][j][k]!=NULL) 
-      {
-	double X=min_X+(double) ((double) (i+0.5)* vox_length);
-        double Y=min_Y+(double) ((double) (j+0.5)* vox_length);
-        double Z=min_Z+(double) ((double) (k+0.5)* vox_length);
-	
-         //also approximate the color...
-	  int rsum=0, gsum=0, bsum=0, num=0;
-	  LaserPoints::iterator point;
-	  LaserPoints tmpl=Vox[i][j][k]->LaserPointsReference();
-	  for (point=tmpl.begin(); point!=tmpl.end(); point++)
-	  {
-	    LaserPoint lp=point->LaserPointRef();
-	    rsum+=lp.Red();
-            gsum+=lp.Green();
-	    bsum+=lp.Blue();
-	    num++;
-	  }
-       
-	 LaserPoint lp(X,Y,Z);
-	 lp.SetColour((int) rsum/num,(int) gsum/num, (int) bsum/num);
+     if (Vox[i][j][k]!=NULL)
+     {
+         double X=min_X+(double) ((double) (i+0.5)* vox_length);
+         double Y=min_Y+(double) ((double) (j+0.5)* vox_length);
+         double Z=min_Z+(double) ((double) (k+0.5)* vox_length);
 
-	 l.push_back(lp);
-	  
-      }
-         // to export empty voxel-centers (empty = voxel without point)
+         //also approximate the color...
+         int rsum=0, gsum=0, bsum=0, num=0;
+         LaserPoints::iterator point;
+         LaserPoints tmpl=Vox[i][j][k]->LaserPointsReference();
+         for (point=tmpl.begin(); point!=tmpl.end(); point++)
+         {
+             LaserPoint lp=point->LaserPointRef();
+             rsum+=lp.Red();
+             gsum+=lp.Green();
+             bsum+=lp.Blue();
+             num++;
+         }
+
+         LaserPoint lp(X,Y,Z);
+         lp.SetColour((int) rsum/num,(int) gsum/num, (int) bsum/num);
+
+         l.push_back(lp);
+
+     }
+         /// export empty voxel-centers (empty = voxel without point)
      else
      {
-         LaserPoint lp (min_X+i*vox_length-vox_length/2,min_Y+j*vox_length-vox_length/2,min_Z+k*vox_length-vox_length/2);
-         lp.SetAttribute(LabelTag,100);
+         double X=min_X+(double) ((double) (i+0.5)* vox_length);
+         double Y=min_Y+(double) ((double) (j+0.5)* vox_length);
+         double Z=min_Z+(double) ((double) (k+0.5)* vox_length);
+
+         LaserPoint lp (X,Y,Z);
+         lp.SetAttribute(LabelTag,100);  /// assign label 100 to empty centers
 
          l.push_back(lp);
      }
-  
+
   return l;
 
 }

@@ -8,10 +8,12 @@ include_directories(D:/MappingLibrary/Mapping/Library/Photogrammetry/include)
 include_directories(D:/MappingLibrary/Mapping/Library/Buildings/include)
 include_directories(D:/MappingLibrary/Mapping/Library/LaserScan/include)
 include_directories(D:/MappingLibrary/Mapping/Foreign/ANN/include/ANN)
+include_directories(D:/MappingLibrary/Mapping/Tools/point_cloud_conversion/laser2ascii)
 link_directories(D:/MappingLibrary/Mapping/Library/lib64)
+
 link_libraries(-lLaserScan -lPhotogrammetry -lBuildings -lEispack -lLinpack -lANN -lnewmat -lgfortran -g3 -llas)
 
-set(SOURCE_FILES main.cpp traj2laserpoints.cpp laservoxel.cpp)
+set(SOURCE_FILES main.cpp traj2laserpoints.cpp laservoxel.cpp raycasting.cpp)
 #set(SOURCE_FILES test.cpp)
 
 add_executable(occupancy_grid2 ${SOURCE_FILES})

@@ -90,10 +90,6 @@ void laserpoint_trajectory_match(char* ascii_file, char *laserFile, bool out_cur
     //double pnt_first_time = laserPoints[0].DoubleAttribute(TimeTag);
     //double pnt_last_time = laserPoints[laserPoints.size()-1].DoubleAttribute(TimeTag);
 
-    ///TODO
-    /// after sorting the points get the TimeTag for first and last laser points
-    // double time_tag_points = laserPoints[laserPoints.begin()].DoubleAttribute(TimeTag);
-    // then use this points to look into traj_time to find related trajectory block and save computation time
 
     LaserPoints laserPoints_time_signed_current, trajpoint_current, new_trajectory;
     double time_tag_traj1, time_tag_traj2, time_tag_points;

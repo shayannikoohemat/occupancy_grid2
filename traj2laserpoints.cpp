@@ -21,44 +21,46 @@ bool comp_attribute_laserpoints(LaserPoint p1, LaserPoint p2)
     return p1.Attribute(TimeTag)<p2.Attribute(TimeTag);
 }
 
-// Getting a laser point and finding and returning corresponding trajectory point based on TimeTag
-LaserPoint traj2laserpoints(LaserPoint current_laserPoint, LaserPoints traj_points)
+/// Getting a laser point and finding and returning corresponding trajectory point based on TimeTag
+LaserPoint traj2laserpoints(LaserPoint current_laserPoint, LaserPoints traj_points, vector<double> traj_points_timetag)
 {
     LaserPoint current_trajectory;
-    double timetag_matchedtrajectory, timetag_current_laserPoint;
+    double timetag_current_laserPoint;
     timetag_current_laserPoint = current_laserPoint.DoubleAttribute(TimeTag);
 
-/*    if (!current_laserPoint.DoubleAttribute(TimeTag)) {
-        timetag_current_laserPoint = current_laserPoint.DoubleAttribute(TimeTag);
-    }else{
-        printf ("  There is no TimeTag!!!  \n");
-    }*/
+    /// sort traj_points with operator "<" based on TimeTag
+    //sort(traj_points.begin(), traj_points.end(), comp_attribute_laserpoints);
 
-    // sort traj_points with operator "<" based on TimeTag
-    sort(traj_points.begin(), traj_points.end(), comp_attribute_laserpoints);
-
-    std::vector<double> traj_points_timetag;
-    std::vector<double>::iterator lower_traj;
-
-    // generate a vector of traj_TimeTag
+    /// generate a vector of traj_TimeTag
+/*    std::vector<double> traj_points_timetag;
     for(int i=0; i<traj_points.size(); i++)
     {
         traj_points_timetag.push_back(traj_points[i].DoubleAttribute(TimeTag));
-    }
+    }*/
 
+    std::vector<double>::iterator lower_traj;
     lower_traj = std::lower_bound(traj_points_timetag.begin(), traj_points_timetag.end(), timetag_current_laserPoint);
 
-    cout << "lower bound at position: " << (lower_traj - traj_points_timetag.begin()) << endl;
-    timetag_matchedtrajectory = traj_points_timetag[lower_traj - traj_points_timetag.begin() -1];
+    if ((lower_traj - traj_points_timetag.begin()) !=NULL){
 
-    current_trajectory = traj_points[lower_traj - traj_points_timetag.begin() -1];
-    //current_trajectory.PrintAttributes();
-    printf (" Points X: %.4f \n ", current_trajectory.X());
-    printf (" Points Y: %.4f \n ", current_trajectory.Y());
-    printf("Traj TimeTag:  %lf \n", timetag_matchedtrajectory);
-    cout << "----------------------------" << endl;
+        //cout << "lower bound at position: " << (lower_traj - traj_points_timetag.begin()) << endl; // debugger
+        double timetag_matchedtrajectory; //traj_timetag
+        timetag_matchedtrajectory = traj_points_timetag[lower_traj - traj_points_timetag.begin() -1]; //debugger
+        //printf("Traj TimeTag: %lf \n ", timetag_matchedtrajectory); //debugger
 
-    return(current_trajectory);
+        ///current Point of matched-trajectory;
+        //LaserPoint current_trajectory  // is defined in the function
+        current_trajectory = traj_points[lower_traj - traj_points_timetag.begin() -1];
+        double traj_time_tag = current_trajectory.DoubleAttribute(TimeTag); //debugger
+        printf("Current Traj TIME_TAG: %lf \n ", traj_time_tag); //debugger
+        //cout << "----------------------------" << endl;
+        return(current_trajectory);
+    }
+    else{
+        cout << "value is out of bound!!! no matched trajectory is found." << endl;
+        cout << "----------------------------" << endl;
+        EXIT_SUCCESS;
+    }
 
 }  //end of function
 
