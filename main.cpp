@@ -18,8 +18,10 @@ void PrintUsage()
 
 int main(int argc, char *argv[]) {
 
-    InlineArguments *args = new InlineArguments(argc, argv);
-    void raycasting(char* ascii_file, char *laserFile, double traj_resolution);
+    InlineArguments     *args = new InlineArguments(argc, argv);
+    //void                raycasting(char* ascii_file, char *laserFile, double traj_resolution);
+    void                PointWiseOcclusionTest(char* ascii_file, char *laserFile, double traj_resolution);
+    vector <int>        occlusion_test(LaserPoint surface_point, LaserPoint source_point, LaserPoints lp);
 
     /// Check on required input files
     if (args->Contains("-usage") ||
@@ -31,9 +33,13 @@ int main(int argc, char *argv[]) {
         return EXIT_SUCCESS;
     }
 
-    /// Call the main function
-    raycasting(args->String("-traj_points"), args->String("-laser_points"),
+    /// Call the main function (raycasting function)
+    PointWiseOcclusionTest(args->String("-traj_points"), args->String("-laser_points"),
                      args->Contains("-traj_resolution"));
+
+
+    //std::cout << "Press ENTER to continue...";
+    //std::cin.ignore( std::numeric_limits<std::streamsize>::max(), '\n' );
 
     return EXIT_SUCCESS;
 }
