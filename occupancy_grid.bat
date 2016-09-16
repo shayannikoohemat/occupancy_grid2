@@ -1,0 +1,1 @@
+occupancy_grid -traj_points D://test//trajectory_2.laser -laser_points D://test//surface_crop_occlusionpointwise.laser
